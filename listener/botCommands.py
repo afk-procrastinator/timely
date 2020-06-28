@@ -174,6 +174,9 @@ class botCommandsListener(commands.Cog):
             prefix = get_prefix(bot, ctx.message)
             username = "Timely [{}]".format(prefix)
             await ctx.guild.get_member(717002097790550038).edit(nick=username)
+            embed = discord.Embed(title="Prefix has been changed!", colour=discord.Color(color))
+            embed.add_field(name="Your prefix has been updated!".format(prefix), value="The prefix for Timely is now: `{}`".format(prefix))
+            await ctx.send(embed=embed)
         else:
             prefix = get_prefix(bot, ctx.message)
             embed = discord.Embed(title="Prefix settings!", colour=discord.Color(color))

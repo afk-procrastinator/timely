@@ -122,7 +122,7 @@ async def PPstatusPP(ctx, *args):
         await user.send(""""Current statistics:
                         Users: {0}
                         Guilds: {1}""".format(memberCount, guildCount))
-'''
+
 @bot.event
 async def on_command_error(ctx, exception):
     color = get_color(bot, ctx.message)
@@ -136,7 +136,7 @@ async def on_command_error(ctx, exception):
         prefix = get_prefix(bot, ctx.message)
         embed.add_field(name = "There's been some kind of error!", value = "Please try again. \nType `{0}help` for help!".format(prefix))
         await ctx.send(embed = embed)
-'''
+
 @bot.event
 async def on_error(event_method, *args, **kwargs):
     id = (args[0].id)

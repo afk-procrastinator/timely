@@ -93,6 +93,7 @@ class TimeListener(commands.Cog):
             return
         elif input.startswith("<"):
             string = re.sub("<|>|@|!", "", input)
+            user = await ctx.bot.fetch_user(int(string))
             embed = discord.Embed(title="**Timezone**", colour=discord.Colour(color))
             with open('files/{}.json'.format(ctx.guild.id), 'r') as file:
                 data = json.load(file)
@@ -103,9 +104,14 @@ class TimeListener(commands.Cog):
                     embed.add_field(name="🌍 🌍 🌍" , value= "User {0} has not set a region! Use `{1}tzset location` to set!".format(input, prefix))
                     await ctx.send(embed=embed)
             region, formatted = getRegion(self, input)
-            embed.add_field(name="Local time for/in: **" + input + "**", value= formatted)
+            embed.add_field(name="Local time for **" + str(user) + "**", value= formatted)
             await ctx.send(embed=embed)
-'''
+        else:
+            region, formatted = getRegion(self, input)
+            embed = discord.Embed(title="**Timezone**", colour=discord.Colour(color))
+            embed.add_field(name="Local time in: **" + input.capitalize() + "**", value= formatted)
+            await ctx.send(embed=embed)
+
     @tz.error
     async def tz_error(self, ctx, error):
         color = int(get_color(bot, ctx.message))
@@ -115,7 +121,7 @@ class TimeListener(commands.Cog):
         message = await ctx.send(embed = embed)
         await asyncio.sleep(5)
         await message.delete()
-'''
+
     
 def setup(client):
     client.add_cog(TimeListener(client))

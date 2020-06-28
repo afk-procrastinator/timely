@@ -1,0 +1,5 @@
+.env
+requirements.txt
+/__pycache__
+/listener/__pycache__
+/files
