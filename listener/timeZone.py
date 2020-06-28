@@ -86,7 +86,6 @@ class TimeListener(commands.Cog):
         color = int(get_color(bot, ctx.message))
         prefix = get_prefix(bot, ctx.message)
         if input == "help":
-            print("help!")
             embed = discord.Embed(title="**`tz` help!**", colour=discord.Colour(color))
             embed.add_field(name="🌍 🌍 🌍" , value= "Set your location with `{}tzset DATE`, or check someone's timezone or the timezone in a location with `{}tz INPUT`".format(prefix, prefix))
             await ctx.send(embed=embed)
@@ -99,19 +98,22 @@ class TimeListener(commands.Cog):
                 data = json.load(file)
                 try:
                     input = data["users"][string]
-                except KeyError:
+                except:
                     embed = discord.Embed(title="**Timezone not set**", colour=discord.Colour(color))
                     embed.add_field(name="🌍 🌍 🌍" , value= "User {0} has not set a region! Use `{1}tzset location` to set!".format(input, prefix))
                     await ctx.send(embed=embed)
+                    return
             region, formatted = getRegion(self, input)
             embed.add_field(name="Local time for **" + str(user) + "**", value= formatted)
             await ctx.send(embed=embed)
+            return
         else:
             region, formatted = getRegion(self, input)
             embed = discord.Embed(title="**Timezone**", colour=discord.Colour(color))
             embed.add_field(name="Local time in: **" + input.capitalize() + "**", value= formatted)
             await ctx.send(embed=embed)
-
+            return
+'''
     @tz.error
     async def tz_error(self, ctx, error):
         color = int(get_color(bot, ctx.message))
@@ -121,7 +123,7 @@ class TimeListener(commands.Cog):
         message = await ctx.send(embed = embed)
         await asyncio.sleep(5)
         await message.delete()
-
+'''
     
 def setup(client):
     client.add_cog(TimeListener(client))

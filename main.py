@@ -126,6 +126,7 @@ async def PPstatusPP(ctx, *args):
 @bot.event
 async def on_command_error(ctx, exception):
     color = get_color(bot, ctx.message)
+    print(exception)
     if type(exception) == discord.ext.commands.errors.CommandNotFound:
         embed = discord.Embed(title="**Command Error >:(**", colour = discord.Color(color))
         prefix = get_prefix(bot, ctx.message)
@@ -141,6 +142,7 @@ async def on_command_error(ctx, exception):
 async def on_error(event_method, *args, **kwargs):
     id = (args[0].id)
     error = sys.exc_info()
+    print(error)
     if error[0] == FileNotFoundError:
         with open('files/{}.json'.format(id), 'w+') as f:
             startData = {"info":{"prefix" : ".", "color" : "0x176BD3"}}
