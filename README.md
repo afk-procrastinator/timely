@@ -1,4 +1,4 @@
-# Timely Discord Bot
+# Timely Discord Bot: PRIVATE
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/spenmich1/timely/issues)
 ![update](https://img.shields.io/github/last-commit/spenmich1/timely)
