@@ -87,7 +87,7 @@ class TimerListener(commands.Cog):
         prefix = get_prefix(bot, ctx.message)
         embed.add_field(name = "_**Please try again!**_", value = "Example: \n`{}timer 10 seconds`".format(prefix))
         message = await ctx.send(embed = embed)
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
         await message.delete()
 
     @cancel.error

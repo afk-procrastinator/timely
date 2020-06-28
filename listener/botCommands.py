@@ -161,17 +161,21 @@ class botCommandsListener(commands.Cog):
         await user.send(embed=embed)
 
     @bot.command()
+    @commands.has_permissions(administrator=True)
     async def prefix(self, ctx, *args):
-        prefix = get_prefix(bot, ctx.message)
         color = int(get_color(bot, ctx.message))
-        if len(args) > 0:
+        if args:
             with open('files/{}.json'.format(ctx.guild.id), 'r') as f:
                 prefixes = json.load(f)    
             prefixes["info"]["prefix"] = args[0]
             with open('files/{}.json'.format(ctx.guild.id), 'w' ) as f:
                 f.truncate()
                 json.dump(prefixes, f, indent = 4)
+            prefix = get_prefix(bot, ctx.message)
+            username = "Timely [{}]".format(prefix)
+            await ctx.guild.get_member(717002097790550038).edit(nick=username)
         else:
+            prefix = get_prefix(bot, ctx.message)
             embed = discord.Embed(title="Prefix settings!", colour=discord.Color(color))
             embed.add_field(name="Your current prefix is **{}**".format(prefix), value="Set a new prefix with `{}prefix PREFIX`".format(prefix))
             await ctx.send(embed=embed)
@@ -220,7 +224,7 @@ class botCommandsListener(commands.Cog):
             embed = discord.Embed(title="Error:", colour=discord.Colour(color))
             embed.add_field(name="Not a valid hex code!", value="Please try again!")
             message = await ctx.send(embed = embed)
-            await asyncio.sleep(2)
+            await asyncio.sleep(5)
             await message.delete()
 
     @colorset.error
@@ -246,7 +250,7 @@ class botCommandsListener(commands.Cog):
         embed = discord.Embed(title="Error!", colour=discord.Colour(color))
         embed.add_field(name=">:(", value="Please try again, or type `{}help`".format(prefix))
         await ctx.send(embed = embed)    
-    
+    '''
     @prefix.error
     async def prefix_error(self, ctx, error):
         prefix = get_prefix(bot, ctx.message)
@@ -254,7 +258,7 @@ class botCommandsListener(commands.Cog):
         embed = discord.Embed(title="Error!", colour=discord.Colour(color))
         embed.add_field(name=">:(", value="Please try again, or type `{}help`".format(prefix))
         await ctx.send(embed = embed)   
-        
+        '''
     @friendship.error
     async def friendship_error(self, ctx, error):
         prefix = get_prefix(bot, ctx.message)

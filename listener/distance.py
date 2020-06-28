@@ -93,7 +93,8 @@ class DistanceListener(commands.Cog):
             prefix = get_prefix(bot, ctx.message)
             color = int(get_color(bot, ctx.message))
             embed = discord.Embed(title="Error!", colour=discord.Colour(color))
-            embed.add_field(name=">:(", value="Please try again, or type `{}help`".format(prefix))
+            embed.add_field(name=">:(", value="Correct format is `{0}dis DD/MM/YYY`".format(prefix))
+            embed.set_footer(text="Type `{0}help`!")
             await ctx.send(embed = embed)    
         string, date = difference(self, startDateParsed, arg2)
         embed = discord.Embed(title="Days until: {0}".format(date), colour=discord.Colour(color))
@@ -105,9 +106,10 @@ class DistanceListener(commands.Cog):
         color = int(get_color(bot, ctx.message))
         prefix = get_prefix(bot, ctx.message)
         embed = discord.Embed(title="Distance error:", color = discord.Colour(color))
-        embed.add_field(name="Example syntax:" ,value = "`{}dis 30/08/2021 days`".format(prefix))
+        embed.add_field(name=">:(", value="Correct format is `{0}dis DD/MM/YYY`".format(prefix))
+        embed.set_footer(text="Type `{0}help`!")
         message = await ctx.send(embed = embed)
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
         await message.delete()
 
 def setup(client):

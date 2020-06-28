@@ -48,7 +48,7 @@ class JokesListener(commands.Cog):
             prefix = get_prefix(bot, ctx.message)
             embed.add_field(name = "_**Please try again!**_", value = "Your query returned no significant data. Please try again! \n \nExample: `{0}hltb Undertale`".format(prefix))
             message = await ctx.send(embed = embed)
-            await asyncio.sleep(2)
+            await asyncio.sleep(5)
             await message.delete()
     
     @bot.command()
@@ -103,7 +103,7 @@ class JokesListener(commands.Cog):
         embed = discord.Embed(title="Videogame search error >:(", colour=discord.Colour(color))
         embed.add_field(name="🎞🎞🎞🎞🎞🎞", value="**Please retry with a different search input!** \n Syntax is: `{}hltb Undertale`".format(prefix))
         message = await ctx.send(embed = embed)
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
         await message.delete()
         
     @bot.command()
@@ -122,8 +122,76 @@ class JokesListener(commands.Cog):
         color = int(get_color(bot, ctx.message))
         embed = discord.Embed(title="Error!", colour=discord.Colour(color))
         embed.add_field(name=">:(", value="Please try again, or type `{}help`".format(prefix))
-        await ctx.send(embed = embed)   
-
+        await ctx.send(embed = embed)  
+        
+    @bot.command()
+    async def messages(self, ctx, *args):
+        # args[0] should be type discord.TextChannel
+            # if args[0] invalid, channel is self 
+        # args[1] should be int
+        # if args[2] doesnt exist, then its number of messages
+        # if it does, then its hours/days/etc
+        amount: int
+        prefix = get_prefix(bot, ctx.message)
+        color = int(get_color(bot, ctx.message))
+        embedTitle: str
+        if len(args[0]) == 21:
+            channel = args[0].replace("#", "")
+            channel = channel.replace("<", "")
+            channel = channel.replace(">", "")
+            inChan = ctx.guild.get_channel(int(channel))
+        else:
+            inChan = ctx.channel
+        embedTitle = "Message analyzer for messages in the last 1000 messages in {1}".format(amount, inChan)
+        messages = await inChan.history(limit=1000).flatten()
+        embed = discord.Embed(title="We're thinking....", colour=discord.Colour(color))
+        embed.add_field(name="🤔🤔🤔", value="Depending on how many messages we've gotta go through, this might take a moment...")
+        message = await ctx.send(embed = embed)
+        color = int(get_color(bot, ctx.message))
+        authors = []
+        common = []
+        authorsStr = []
+        c = collections.Counter()
+        a = collections.Counter()
+        for i in messages:
+            content = (i.content.split())
+            auth = i.author.id
+            authors.append(auth)
+            c.update(content)
+        for letter, count in c.most_common(3):
+            if letter == None:
+                return
+            else:
+                common.append("** {0} **, used **{1}** times.".format(letter, count))
+        a.update(authors)
+        for letter, count in a.most_common(3):
+            if letter == None:
+                return
+            else:
+                authorsStr.append("**<@{0}>**, who has sent **{1}** messages".format(letter, count))
+        embed = discord.Embed(title=embedTitle, colour=discord.Colour(color))
+        commonString = """
+        Most common is {0}
+        Secondmost common is {1}
+        Thirdmost common is {2}
+        """.format(common[0], common[1], common[2])
+        authorString = """
+        Most messages have been sent by {0}
+        In second place is {1}
+        Third place is held by {2}
+        """.format(authorsStr[0], authorsStr[1], authorsStr[2])
+        embed.add_field(name="Most common words:", value=commonString)
+        embed.add_field(name="Most active members:", value=authorString)
+        await message.edit(embed=embed)
+    
+    @messages.error
+    async def messages_error(self,ctx, error):
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        embed = discord.Embed(title="Whoops!", colour=discord.Colour(color))
+        embed.add_field(name="There's been an error", value="Please type `{0}help`".format(prefix))
+        await ctx.send(embed = embed) 
+''' IN PROCESS
     @bot.command()
     async def messages(self, ctx, *args):
         # args[0] should be type discord.TextChannel
@@ -205,15 +273,7 @@ class JokesListener(commands.Cog):
         embed.add_field(name="Most common words:", value=commonString)
         embed.add_field(name="Most active members:", value=authorString)
         await message.edit(embed=embed)
-
-    @messages.error
-    async def messages_error(self,ctx, error):
-        color = int(get_color(bot, ctx.message))
-        prefix = get_prefix(bot, ctx.message)
-        embed = discord.Embed(title="Whoops!", colour=discord.Colour(color))
-        embed.add_field(name="There's been an error", value="Please type `{0}help`".format(prefix))
-        await ctx.send(embed = embed)
-
+'''
         
 def setup(client):
     client.add_cog(JokesListener(client))

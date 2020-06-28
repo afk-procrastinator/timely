@@ -123,7 +123,7 @@ class ReminderListener(commands.Cog):
         embed = discord.Embed(title="Syntax error >:(", colour = discord.Colour(color))
         embed.add_field(name = "Correct syntax:", value = "{}?remind @user \"message\" time`\ne.g. `?remind @TimeVibe \"Your message here\" 1 week 10 hours 3 minutes` \n \n *`@user` field is optional if the reminder is for yourself.*".format(prefix))
         message = await ctx.send(embed = embed)
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
         await message.delete()
 
         

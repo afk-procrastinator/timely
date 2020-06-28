@@ -77,7 +77,7 @@ class CurrencyListener(commands.Cog):
         embed.add_field(name = "-", value = currenciesSecond, inline=True)
         embed.set_footer(text = "Thanks to exchangeratesapi.io for the data!")
         message = await ctx.send(embed = embed)
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
         await message.delete()
         
 

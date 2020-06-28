@@ -22,15 +22,20 @@ def writeFile(combined, ctx, user):
 class BirthdayListener(commands.Cog):
     @bot.command()
     async def bdayset(self, ctx, *args):
+        color = int(get_color(bot, ctx.message))
+        if len(args) == 0:
+            embed = discord.Embed(title="Error!", colour=discord.Colour(color))
+            embed.add_field(name=">:(", value="The correct command is `{0}bdayset MONTH DAY`. If you'd like to check someone's birthday, use `{0}bday USER`".format(prefix))
+            embed.set_footer(text="Type `{0}help`")
+            await ctx.send(embed = embed)    
         user = ctx.message.author
         prefix = get_prefix(bot, ctx.message)
         combined = " ".join(args) # i.e. 3 Jan
         try:
             date = arrow.get(combined, "MMMM D")
             writeFile(combined, ctx, user)
-            color = int(get_color(bot, ctx.message))
             embed = discord.Embed(title="Birthday set!", colour=discord.Colour(color))
-            embed.add_field(name="🎂🎂🎂", value="Set to: {0}".format(date))
+            embed.add_field(name="🎂🎂🎂", value="Set to: **{0}**".format(date.format("MMMM DD")))
             await user.send(embed = embed)
         except ValueError:
             embed = discord.Embed(title="Birthday error!", colour=discord.Colour(color))
@@ -39,6 +44,13 @@ class BirthdayListener(commands.Cog):
             
     @bot.command()
     async def bday(self, ctx, user: discord.Member):
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        if user == None:
+            embed = discord.Embed(title="Help is here!", colour=discord.Colour(color))
+            embed.add_field(name=">:(", value="The correct command is `{0}bday USER`. If you'd like to set your birthday, use `{0}bdayset MONTH DAY`".format(prefix))
+            embed.set_footer(text="Type `{0}help`".format(prefix))
+            await ctx.send(embed = embed)    
         userID = user.id
         userNick = user.nick
         color = int(get_color(bot, ctx.message))
@@ -61,7 +73,8 @@ class BirthdayListener(commands.Cog):
         prefix = get_prefix(bot, ctx.message)
         color = int(get_color(bot, ctx.message))
         embed = discord.Embed(title="Error!", colour=discord.Colour(color))
-        embed.add_field(name=">:(", value="Please try again, or type `{}help`".format(prefix))
+        embed.add_field(name=">:(", value="The correct command is `{0}bdayset MONTH DAY`. If you'd like to check someone's birthday, use `{0}bday USER`".format(prefix))
+        embed.set_footer(text="Type `{0}help`")
         await ctx.send(embed = embed)    
 
     @bday.error
@@ -69,7 +82,8 @@ class BirthdayListener(commands.Cog):
         prefix = get_prefix(bot, ctx.message)
         color = int(get_color(bot, ctx.message))
         embed = discord.Embed(title="Error!", colour=discord.Colour(color))
-        embed.add_field(name=">:(", value="Please try again, or type `{}help`".format(prefix))
+        embed.add_field(name=">:(", value="The correct command is `{0}bday USER`. If you'd like to set your birthday, use `{0}bdayset MONTH DAY`".format(prefix))
+        embed.set_footer(text="Type `{0}help`")
         await ctx.send(embed = embed)    
     
 

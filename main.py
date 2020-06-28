@@ -5,9 +5,11 @@ from discord.ext import commands
 import arrow as ar
 import os
 import settings
+from discord.utils import find
 import json
 import sys
 from master import get_prefix
+from master import get_color
 
 asciiString = """
                         .s$$$Ss.
@@ -97,6 +99,14 @@ async def on_guild_join(guild):
     with open('files/{}.json'.format(guild.id), 'w+') as f:
         startData = {"info":{"prefix" : ".", "color" : "0x176BD3"}}
         json.dump(startData, f, indent = 4)
+    embed = discord.Embed(title="Joined!", colour=discord.Colour(1534931))
+    general = find(lambda x: x.name == 'general',  guild.text_channels)
+    if general and general.permissions_for(guild.me).send_messages:
+        embed.add_field(name="What's up!", value="Hello {}! I'm Timely. \nThank you for adding me to your server. Type in `.help` for commands, or `.timeprefix PREFIX` to change your prefix.".format(guild.name))
+        await general.send(embed=embed)
+    username = "Timely [.]"
+    await bot.user.edit(username=username)
+
         
 @bot.event
 async def on_guild_remove(guild):
@@ -112,6 +122,29 @@ async def PPstatusPP(ctx, *args):
         await user.send(""""Current statistics:
                         Users: {0}
                         Guilds: {1}""".format(memberCount, guildCount))
+'''
+@bot.event
+async def on_command_error(ctx, exception):
+    color = get_color(bot, ctx.message)
+    if type(exception) == discord.ext.commands.errors.CommandNotFound:
+        embed = discord.Embed(title="**Command Error >:(**", colour = discord.Color(color))
+        prefix = get_prefix(bot, ctx.message)
+        embed.add_field(name = "That's not a recognized command!", value = "Please try again. \nType `{0}help` for help!".format(prefix))
+        await ctx.send(embed = embed)
+    else:
+        embed = discord.Embed(title="**Command Error >:(**", colour = discord.Color(color))
+        prefix = get_prefix(bot, ctx.message)
+        embed.add_field(name = "There's been some kind of error!", value = "Please try again. \nType `{0}help` for help!".format(prefix))
+        await ctx.send(embed = embed)
+'''
+@bot.event
+async def on_error(event_method, *args, **kwargs):
+    id = (args[0].id)
+    error = sys.exc_info()
+    if error[0] == FileNotFoundError:
+        with open('files/{}.json'.format(id), 'w+') as f:
+            startData = {"info":{"prefix" : ".", "color" : "0x176BD3"}}
+            json.dump(startData, f, indent = 4)
 
 @bot.command()
 async def contact(ctx, *args):
