@@ -140,14 +140,15 @@ async def on_command_error(ctx, exception):
 
 @bot.event
 async def on_error(event_method, *args, **kwargs):
-    id = (args[0].id)
+    id = (args[0].guild.id)
+    print
     error = sys.exc_info()
     print(error)
     if error[0] == FileNotFoundError:
         with open('files/{}.json'.format(id), 'w+') as f:
             startData = {"info":{"prefix" : ".", "color" : "0x176BD3"}}
             json.dump(startData, f, indent = 4)
-
+            
 @bot.command()
 async def contact(ctx, *args):
     text = " ".join(args)
