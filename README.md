@@ -26,20 +26,22 @@ This bot is perfect for small to mid-sized servers with a large international fo
 - Tons of customization features:
     - Embed color
     - Prefix
+    - Bot nickname changes with prefix
+
 
 ## Possible future features:
 - Games
+- Reddit integration
 - Voice chat timers 
 - Non-free APIs (horoscopes, etc.)
 - Weather checker
 - Global heatmap
 - Birthday reminders
-- Bot nickname editing
 - And so much more...
 
 ## Hey, you!
 **I want *your* feedback on this! Leave a comment, issue, or use the `.contact` command to hit me up!**
-**I also do comissions- send me a message, or place an order through my (Fiverr)[https://www.fiverr.com/spencer307/make-a-simple-discord-bot]**
+**I also do comissions- send me a message, or place an order through my [Fiverr](https://www.fiverr.com/spencer307/make-a-simple-discord-bot)**
 **My prices and turnaround times are low, and I am flexible with pricing if the bot is something small- a great gift to a friend!**
 
 ### APIs and libraries used:
