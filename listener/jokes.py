@@ -142,7 +142,7 @@ class JokesListener(commands.Cog):
             inChan = ctx.guild.get_channel(int(channel))
         else:
             inChan = ctx.channel
-        embedTitle = "Message analyzer for messages in the last 1000 messages in {1}".format(amount, inChan)
+        embedTitle = "Message analyzer for messages in the last 1000 messages in #{}".format(inChan)
         messages = await inChan.history(limit=1000).flatten()
         embed = discord.Embed(title="We're thinking....", colour=discord.Colour(color))
         embed.add_field(name="🤔🤔🤔", value="Depending on how many messages we've gotta go through, this might take a moment...")
@@ -191,6 +191,7 @@ class JokesListener(commands.Cog):
         embed = discord.Embed(title="Whoops!", colour=discord.Colour(color))
         embed.add_field(name="There's been an error", value="Please type `{0}help`".format(prefix))
         await ctx.send(embed = embed) 
+        
 ''' IN PROCESS
     @bot.command()
     async def messages(self, ctx, *args):

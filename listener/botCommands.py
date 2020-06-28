@@ -32,8 +32,15 @@ mainString = """
 supportString = """
 I am but a solo developer working on this bot using the discord.py async rewrite, so bugs and issues will be common.
 `{0}contact MESSAGE` will send me a message- if you notice any bugs, please send them there. Spam and certain keywords will be blocked. 
-All of the code is open-source on my [GitHub](https://github.com/spenmich1/timevibeBot). Star, fork, or message me!
+All of the code is open-source on my [GitHub](https://github.com/spenmich1/timevibeBot).
 Donate to me via PayPal [spencermichaels1@gmail.com] or BTC: [1Mf3oAadsGJVN39Up9gZwQdQneMy6DDc2c].
+
+Or, spread my links:
+[bots.gg](https://discord.bots.gg/bots/717002097790550038)
+[bots on discord](https://bots.ondiscord.xyz/bots/717002097790550038)
+[abstract discord list](https://abstractlist.com/bot/717002097790550038)
+[discord bot list](https://discordbotlist.com/bots/timely)
+[top.gg](https://top.gg/bot/717002097790550038)
 """
 tzString = """
 *Gives the current time for a certain location or user:*
@@ -129,7 +136,7 @@ class botCommandsListener(commands.Cog):
         elif args[0] == "utility":
             embed = discord.Embed(title="Help is here!", colour=color)
             embed.add_field(name=" __**Utility Commands:**__", value=utilityString.format(prefix))
-            embed.set_footer(text="Only users with Admin permissions can run this command.")
+            embed.set_footer(text="Only users with Admin permissions can run these commands. Sorry normies.")
             await ctx.send(embed=embed)
         elif args[0] == "data":
             embed = discord.Embed(title="Help is here!", colour=color)

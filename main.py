@@ -11,45 +11,6 @@ import sys
 from master import get_prefix
 from master import get_color
 
-asciiString = """
-                        .s$$$Ss.
-            .8,         $$$. _. .              ..sS$$$$$"  ...,.;
- o.   ,@..  88        =.$"$'  '          ..sS$$$$$$$$$$$$s. _;"'
-  @@@.@@@. .88.   `  ` ""l. .sS$$.._.sS$$$$$$$$$$$$S'"'
-   .@@@q@@.8888o.         .s$$$$$$$$$$$$$$$$$$$$$'
-     .:`@@@@33333.       .>$$$$$$$$$$$$$$$$$$$$'
-     .: `@@@@333'       ..>$$$$$$$$$$$$$$$$$$$'
-      :  `@@333.     `.,   s$$$$$$$$$$$$$$$$$'
-      :   `@33       $$ S.s$$$$$$$$$$$$$$$$$'
-      .S   `Y      ..`  ,"$' `$$$$$$$$$$$$$$
-      $s  .       ..S$s,    . .`$$$$$$$$$$$$.
-      $s .,      ,s ,$$$$,,sS$s.$$$$$$$$$$$$$.
-      / /$$SsS.s. ..s$$$$$$$$$$$$$$$$$$$$$$$$$.
-     /`.`$$$$$dN.ssS$$'`$$$$$$$$$$$$$$$$$$$$$$$.
-    ///   `$$$$$$$$$'    `$$$$$$$$$$$$$$$$$$$$$$.
-   ///|     `S$$S$'       `$$$$$$$$$$$$$$$$$$$$$$.
-  / /                      $$$$$$$$$$$$$$$$$$$$$.
-                           `$$$$$$$$$$$$$$$$$$$$$s.
-                            $$$"'        .?T$$$$$$$
-                           .$'        ...      ?$$#\
-                           !       -=S$$$$$s
-                         .!       -=s$$'  `$=-_      :
-                        ,        .$$$'     `$,       .|
-                       ,       .$$$'          .        ,
-                      ,     ..$$$'
-                          .s$$$'                 `s     .
-                   .   .s$$$$'                    $s. ..$s
-                  .  .s$$$$'                      `$s=s$$$
-                    .$$$$'                         ,    $$s
-               `   " .$$'                               $$$
-               ,   s$$'                              .  $$$s
-            ` .s..s$'                                .s ,$$
-             .s$$$'                                   "s$$$,
-          -   $$$'                                     .$$$$.
-        ."  .s$$s                                     .$',',$.
-        $s.s$$$$S..............   ................    $$....s$s......
-"""
-
 bot = commands.Bot(command_prefix=get_prefix)
 gmaps = googlemaps.Client(key=settings.GMAPS)
 token = settings.TOKEN
@@ -91,7 +52,6 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    print(asciiString)
     await bot.change_presence(activity=discord.Game(name="the Voight Kampff test"))
 
 @bot.event
@@ -126,7 +86,8 @@ async def PPstatusPP(ctx, *args):
 @bot.event
 async def on_command_error(ctx, exception):
     color = get_color(bot, ctx.message)
-    print(exception)
+    print("exc:", exception)
+    print(type(exception))
     if type(exception) == discord.ext.commands.errors.CommandNotFound:
         embed = discord.Embed(title="**Command Error >:(**", colour = discord.Color(color))
         prefix = get_prefix(bot, ctx.message)

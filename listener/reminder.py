@@ -33,8 +33,7 @@ async def sendDM(input):
     timeCreated = input["timeCreated"]
     message = input["message"]
     channel = await userSend.create_dm()
-    color = int(get_color(bot, channel.message))
-    embed = discord.Embed(title="⏲ Your reminder is here! ⏲", colour=discord.Colour(color))
+    embed = discord.Embed(title="⏲ Your reminder is here! ⏲", colour=discord.Colour(0x176BD3))
     embed.add_field(name = "The reminder was set at:", value = timeCreated + " UTC" )
     embed.add_field(name = "Your message is:", value = message)
     await channel.send(embed = embed)
@@ -62,6 +61,7 @@ async def runLoop():
         if resetLoop == False:
             for key in list(loopDict):
                 if loopDict[key]["timeAdd"] == 0:
+                    print(loopDict)
                     await sendDM(loopDict[key])
                     del loopDict[key]
                 loopDict[key]["timeAdd"] -= 1
@@ -88,13 +88,25 @@ class ReminderListener(commands.Cog):
     async def remind(self, ctx, *arg,):
         global userSend
         command = []
-        if type(arg[0]) == discord.Member:
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        i = 0
+        if len(arg) == 1:
+            embed = discord.Embed(title="Reminder help!", colour = discord.Colour(color))
+            embed.add_field(name = "Correct syntax:", value = "`{}?remind \"message\" time`\ne.g. `{}remind \"Your message here\" 1 week 10 hours 3 minutes`".format(prefix, prefix))
+            message = await ctx.send(embed = embed)
+        if type(arg[i]) == discord.Member:
             userSend = discord.Member
+            i+=1
+            print(arg[i])
         else:
             userSend = ctx.message.author 
-        message = arg[1]
+        message = arg[i]
+        print(arg[i])
+        i+=1
         arg = list(arg)
-        del(arg[:1])
+        del(arg[:i])
+        print(arg)
         for args in arg: 
             command.append(args)
         args = 0
@@ -103,7 +115,7 @@ class ReminderListener(commands.Cog):
         arguments = []
         timeAdd = 0
         timeNow = ar.utcnow()
-        timeCreated = timeNow.format("MMMM Do, YYYY [at] DD:mm")
+        timeCreated = timeNow.format("MMMM Do, YYYY [at] HH:mm")
         while i < (length - 1):
             additional = formatToMin(self, command[i+1], int(command[i]))
             timeAdd += additional
@@ -121,7 +133,7 @@ class ReminderListener(commands.Cog):
         prefix = get_prefix(bot, ctx.message)
         color = int(get_color(bot, ctx.message))
         embed = discord.Embed(title="Syntax error >:(", colour = discord.Colour(color))
-        embed.add_field(name = "Correct syntax:", value = "{}?remind @user \"message\" time`\ne.g. `?remind @TimeVibe \"Your message here\" 1 week 10 hours 3 minutes` \n \n *`@user` field is optional if the reminder is for yourself.*".format(prefix))
+        embed.add_field(name = "Correct syntax:", value = "`{}?remind @user \"message\" time`\ne.g. `{}remind @TimeVibe \"Your message here\" 1 week 10 hours 3 minutes` \n \n *`@user` field is optional if the reminder is for yourself.*".format(prefix, prefix))
         message = await ctx.send(embed = embed)
         await asyncio.sleep(5)
         await message.delete()
