@@ -94,14 +94,19 @@ async def on_command_error(ctx, exception):
         embed = discord.Embed(title="**Command Error >:(**", colour = discord.Color(color))
         prefix = get_prefix(bot, ctx.message)
         embed.add_field(name = "That's not a recognized command!", value = "Please try again. \nType `{0}help` for help!".format(prefix))
-        await ctx.send(embed = embed)
+        message = await ctx.send(embed = embed)
+    elif type(exception) == discord.ext.commands.errors.CommandInvokeError:
+        embed = discord.Embed(title="**Command Error >:(**", colour = discord.Color(color))
+        prefix = get_prefix(bot, ctx.message)
+        embed.add_field(name = "I'm not allowed to do that!", value = "Please try again, or revisit my role permissions! \nType `{0}help` for help!".format(prefix))
+        message = await ctx.send(embed = embed)
     else:
         embed = discord.Embed(title="**Command Error >:(**", colour = discord.Color(color))
         prefix = get_prefix(bot, ctx.message)
         embed.add_field(name = "There's been some kind of error!", value = "Please try again. \nType `{0}help` for help!".format(prefix))
-        await ctx.send(embed = embed)
+        message = await ctx.send(embed = embed)
     await asyncio.sleep(5)
-    await ctx.message.delete()
+    await message.delete()
 '''
 @bot.event
 async def on_error(event_method, *args, **kwargs):

@@ -15,12 +15,18 @@ from master import get_color
 week = ["weeks", "week", "wk", "wks"]
 day = ["days", "day", "dy", "dys"]
 hour = ["hours", "hour", "hr", "hrs"]
-commonWords = ["ourselves", "hers", "between", "yourself", "but", "again", "there", "about", "once", "during", "out", "very", "having", "with", "they", "own", "an", "be", "some", "for", "do", "its", "yours", "such", "into", "of", "most", "itself", "other", "off", "is", "s", "am", "or", "who", "as", "from", "him", "each", "the", "themselves", "until", "below", "are", "we", "these", "your", "his", "through", "don", "nor", "me", "were", "her", "more", "himself", "this", "down", "should", "our", "their", "while", "above", "both", "up", "to", "ours", "had", "she", "all", "no", "when", "at", "any", "before", "them", "same", "and", "been", "have", "in", "will", "on", "does", "yourselves", "then", "that", "because", "what", "over", "why", "so", "can", "did", "not", "now", "under", "he", "you", "herself", "has", "just", "where", "too", "only", "myself", "which", "those", "i", "after", "few", "whom", "t", "being", "if", "theirs", "my", "against", "a", "by", "doing", "it", "how", "further", "was", "here", "than"]
+commonWords = ["\ ", "ourselves", "hers", "between", "yourself", "but", "again", "there", "about", "once", "during", "out", "very", "having", "with", "they", "own", "an", "be", "some", "for", "do", "its", "yours", "such", "into", "of", "most", "itself", "other", "off", "is", "s", "am", "or", "who", "as", "from", "him", "each", "the", "themselves", "until", "below", "are", "we", "these", "your", "his", "through", "don", "nor", "me", "were", "her", "more", "himself", "this", "down", "should", "our", "their", "while", "above", "both", "up", "to", "ours", "had", "she", "all", "no", "when", "at", "any", "before", "them", "same", "and", "been", "have", "in", "will", "on", "does", "yourselves", "then", "that", "because", "what", "over", "why", "so", "can", "did", "not", "now", "under", "he", "you", "herself", "has", "just", "where", "too", "only", "myself", "which", "those", "i", "after", "few", "whom", "t", "being", "if", "theirs", "my", "against", "a", "by", "doing", "it", "how", "further", "was", "here", "than"]
 
 
 class JokesListener(commands.Cog):
     @bot.command()
     async def hltb(self, ctx, *args):
+        prefix = get_prefix(bot, ctx.message)
+        if args[0] == "help":
+            embed = discord.Embed(title="**`hltb` help!**", colour=discord.Colour(color))
+            embed.add_field(name="Help is here!", value="Correct format is `{0}hltb VIDEOGAME`".format(prefix))
+            await ctx.send(embed=embed)
+            return
         color = int(get_color(bot, ctx.message))
         search = (" ".join(args))
         results = await HowLongToBeat().async_search(search)
@@ -55,6 +61,12 @@ class JokesListener(commands.Cog):
     
     @bot.command()
     async def movie(self, ctx, *args):
+        prefix = get_prefix(bot, ctx.message)
+        if args[0] == "help":
+            embed = discord.Embed(title="**`movie` help!**", colour=discord.Colour(color))
+            embed.add_field(name="Help is here!", value="Correct format is `{0}movie TITLE`".format(prefix))
+            await ctx.send(embed=embed)
+            return
         search = ("_".join(args))
         response = requests.get("http://www.omdbapi.com/?apikey={0}&t={1}".format(key, search))
         data = json.loads(response.text)
@@ -111,6 +123,12 @@ class JokesListener(commands.Cog):
     @bot.command()
     async def qr(self, ctx, args):
         args = args.join("%20")
+        prefix = get_prefix(bot, ctx.message)
+        if args[0] == "help":
+            embed = discord.Embed(title="**`qr` help!**", colour=discord.Colour(color))
+            embed.add_field(name="Help is here!", value="Correct format is `{0}qr MESSAGE`".format(prefix))
+            await ctx.send(embed=embed)
+            return
         color = int(get_color(bot, ctx.message))
         url = "http://api.qrserver.com/v1/create-qr-code/?data={}&size=1000x1000".format(args)
         embed = discord.Embed(title="QR Generator:", colour=discord.Colour(color))
@@ -128,6 +146,13 @@ class JokesListener(commands.Cog):
         
     @bot.command()
     async def messages(self, ctx, *args):
+        prefix = get_prefix(bot, ctx.message)
+        if args[0] == "help":
+            embed = discord.Embed(title="**`messages` help!**", colour=discord.Colour(color))
+            embed.add_field(name="Help is here!", value="Correct format is `{0}messages CHANNEL`".format(prefix))
+            embed.set_footer(text="`CHANNEL` value is optional.")
+            await ctx.send(embed=embed)
+            return
         # args[0] should be type discord.TextChannel
             # if args[0] invalid, channel is self 
         # args[1] should be int
@@ -137,7 +162,7 @@ class JokesListener(commands.Cog):
         prefix = get_prefix(bot, ctx.message)
         color = int(get_color(bot, ctx.message))
         embedTitle: str
-        if len(args[0]) == 21:
+        if args:
             channel = args[0].replace("#", "")
             channel = channel.replace("<", "")
             channel = channel.replace(">", "")
@@ -162,6 +187,8 @@ class JokesListener(commands.Cog):
                     auth = i.author.id
                     authors.append(auth)
                     c.update(content)
+                else:
+                    break
         for letter, count in c.most_common(3):
             if letter == None:
                 return
@@ -174,6 +201,7 @@ class JokesListener(commands.Cog):
             else:
                 authorsStr.append("**<@{0}>**, who has sent **{1}** messages".format(letter, count))
         embed = discord.Embed(title=embedTitle, colour=discord.Colour(color))
+        print(authorsStr)
         commonString = """
         Most common is {0}
         Secondmost common is {1}

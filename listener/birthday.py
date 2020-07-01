@@ -24,6 +24,11 @@ class BirthdayListener(commands.Cog):
     async def bdayset(self, ctx, *args):
         color = int(get_color(bot, ctx.message))
         prefix = get_prefix(bot, ctx.message)
+        if args[0] == "help":
+            embed = discord.Embed(title="**`bdayset` help!**", colour=discord.Colour(color))
+            embed.add_field(name="Help is here!", value="The correct command is `{0}bdayset MONTH DAY`. If you'd like to check someone's birthday, use `{0}bday USER`".format(prefix))
+            await ctx.send(embed=embed)
+            return
         if len(args) == 0:
             embed = discord.Embed(title="Error!", colour=discord.Colour(color))
             embed.add_field(name=">:(", value="The correct command is `{0}bdayset MONTH DAY`. If you'd like to check someone's birthday, use `{0}bday USER`".format(prefix))

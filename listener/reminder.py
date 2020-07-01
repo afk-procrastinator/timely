@@ -85,8 +85,9 @@ def formatToMin(self, inFormat, difference):
 
 class ReminderListener(commands.Cog):
     @bot.command()
-    async def remind(self, ctx, *arg,):
+    async def remind(self, ctx, *arg):
         global userSend
+        prefix = get_prefix(bot, ctx.message)
         command = []
         color = int(get_color(bot, ctx.message))
         prefix = get_prefix(bot, ctx.message)
