@@ -181,12 +181,10 @@ class JokesListener(commands.Cog):
         c = collections.Counter()
         a = collections.Counter()
         stopWords = stopwords.words("english")
-        print(stopWords)
         for i in messages:
             content = (i.content.split())
             for words in content:
-                print(words)
-                if words.lower() not in stopWords:
+                if words.lower() not in stopWords and len(str(words)) >= 4:
                     auth = i.author.id
                     authors.append(auth)
                     c.update(content)
@@ -212,9 +210,9 @@ class JokesListener(commands.Cog):
         """.format(common[0], common[1], common[2])
         authorString = """
         Most messages have been sent by {0}
-        In second place is {1}
-        Third place is held by {2}
-        """.format(authorsStr[0], authorsStr[1], authorsStr[2])
+        In second place is 1
+        Third place is held by 2
+        """.format(authorsStr[0])
         embed.add_field(name="Most common words:", value=commonString)
         embed.add_field(name="Most active members:", value=authorString)
         await message.edit(embed=embed)
