@@ -8,6 +8,7 @@ import settings
 from discord.utils import find
 import json
 import sys
+import asyncio
 from master import get_prefix
 from master import get_color
 
@@ -62,7 +63,8 @@ async def on_guild_join(guild):
     embed = discord.Embed(title="Joined!", colour=discord.Colour(1534931))
     general = find(lambda x: x.name == 'general',  guild.text_channels)
     if general and general.permissions_for(guild.me).send_messages:
-        embed.add_field(name="What's up!", value="Hello {}! I'm Timely. \nThank you for adding me to your server. Type in `.help` for commands, or `.timeprefix PREFIX` to change your prefix.".format(guild.name))
+        embed.add_field(name="What's up!", value="Hello {}! I'm Timely. \nThank you for adding me to your server. Type in `.help` for commands, or `.prefix PREFIX` to change your prefix.".format(guild.name))
+        embed.set_footer(text="Type in `.data` to see how we use the data you give us!")
         await general.send(embed=embed)
     username = "Timely [.]"
     await bot.user.edit(username=username)
@@ -98,7 +100,9 @@ async def on_command_error(ctx, exception):
         prefix = get_prefix(bot, ctx.message)
         embed.add_field(name = "There's been some kind of error!", value = "Please try again. \nType `{0}help` for help!".format(prefix))
         await ctx.send(embed = embed)
-
+    await asyncio.sleep(5)
+    await ctx.message.delete()
+'''
 @bot.event
 async def on_error(event_method, *args, **kwargs):
     id = (args[0].guild.id)
@@ -109,7 +113,7 @@ async def on_error(event_method, *args, **kwargs):
         with open('files/{}.json'.format(id), 'w+') as f:
             startData = {"info":{"prefix" : ".", "color" : "0x176BD3"}}
             json.dump(startData, f, indent = 4)
-            
+'''
 @bot.command()
 async def contact(ctx, *args):
     text = " ".join(args)

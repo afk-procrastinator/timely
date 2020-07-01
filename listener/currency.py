@@ -55,12 +55,15 @@ async def getAPI(self, base, currency):
 
 class CurrencyListener(commands.Cog):
     @bot.command()
-    async def convert(self, ctx, amount, base: str, to: str, currency: str):
+    async def convert(self, ctx, *args): #10 USD TO RUB or 10 USD RUB
         color = int(get_color(bot, ctx.message))
-        base = base.upper()
-        currency = currency.upper()
+        if len(args) == 4:
+            currency = args[3].upper()
+        else:
+            currency = args[2].upper()
+        base = args[1].upper()
         response = await getAPI(self, base, currency)
-        amount = int(amount)
+        amount = int(args[0])
         final = round((amount * response), 2)
         embed = discord.Embed(title="💸💸💸", colour=discord.Colour(color))
         embed.add_field(name = "Converting {0} to {1}".format(base, currency), value = "`{0}` `{1}` in `{2}` is \n `{3} {4}`".format(amount, base, currency, final, currency), inline=True)
@@ -72,7 +75,7 @@ class CurrencyListener(commands.Cog):
         prefix = get_prefix(bot, ctx.message)
         color = int(get_color(bot, ctx.message))
         embed = discord.Embed(title="Possible currencies:", colour=discord.Colour(color))
-        embed.add_field(name="Syntax", value="`{}convert 10 USD RUB`".format(prefix), inline = False)
+        embed.add_field(name="Syntax", value="`{}convert 10 USD to RUB`".format(prefix), inline = False)
         embed.add_field(name = "💸💸💸💸💸💸", value = currenciesFirst, inline=True)
         embed.add_field(name = "💸💸💸💸💸💸", value = currenciesSecond, inline=True)
         embed.set_footer(text = "Thanks to exchangeratesapi.io for the data!")

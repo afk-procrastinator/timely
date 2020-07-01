@@ -102,6 +102,54 @@ utilityString = """
 class botCommandsListener(commands.Cog):
         
     @bot.command()
+    async def support(self, ctx):
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        embed = discord.Embed(title="Thank you!", colour=color)
+        embed.add_field(name=" __**Support me:**__", value=supportString.format(prefix))
+        await ctx.send(embed=embed)
+    
+    @bot.command()
+    async def utility(self, ctx):
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)        
+        embed = discord.Embed(title="Help is here!", colour=color)
+        embed.add_field(name=" __**Utility Commands:**__", value=utilityString.format(prefix))
+        embed.set_footer(text="Only users with Admin permissions can run these commands. Sorry normies.")
+        await ctx.send(embed=embed)
+        
+    @bot.command()
+    async def fun(self, ctx):
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        embed = discord.Embed(title="Help is here!", colour=color)
+        embed.add_field(name=" __**Fun Commands:**__", value=funString.format(prefix))
+        await ctx.send(embed=embed)
+        
+    @bot.command()
+    async def birthday(self, ctx):
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        embed = discord.Embed(title="Help is here!", colour=color)
+        embed.add_field(name=" __**Birthday Commands:**__", value=birthdayString.format(prefix))
+        await ctx.send(embed=embed)
+
+    @bot.command()
+    async def data(self, ctx):
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        embed = discord.Embed(title="Help is here!", colour=color)
+        embed.add_field(name=" __**How we use your data:**__", value="""By inviting me to your server, you only allow me to access the permissions you agreed on when adding me. I only collect data which you give to me, which inclues your birthday and timezone. 
+                        
+                        The timezone data is saved as **general regions**, not the location you type in. 
+                        
+                        The birthday data saves only what you give it, and **doesn't support year of birth** for a reason.
+                        
+                        The messaging parsing command only temporarily reads the messages in the server, and deletes **any mention** of the messages from it's instant memory as soon as it finishes. 
+                        
+                        All data saved is deleted upon leaving a server. We use the same hosting servers as many other leading bots who collect far more detailed information on you. """)
+        await ctx.send(embed=embed)
+    @bot.command()
     async def help(self, ctx, *args):
         prefix = get_prefix(bot, ctx.message)
         color = int(get_color(bot, ctx.message))

@@ -58,9 +58,18 @@ def getRegion(self, input):
 class TimeListener(commands.Cog):
     
     @bot.command()
-    async def tzset(self, ctx, input: str):
+    async def tzset(self, ctx, *args):
+        input = " ".join(args)
         region, formatted = getRegion(self, input)
         user = ctx.message.author
+        print(input)
+        prefix = get_prefix(bot, ctx.message)
+        color = int(get_color(bot, ctx.message))
+        if input == "help":
+            embed = discord.Embed(title="**`tzset` help!**", colour=discord.Colour(color))
+            embed.add_field(name="🌍 🌍 🌍" , value= "Set your location with `{}tzset DATE`, or check someone's timezone or the timezone in a location with `{}tz INPUT`".format(prefix, prefix))
+            await ctx.send(embed=embed)
+            return
         with open('files/{}.json'.format(ctx.guild.id), 'r+') as file:
                 addData = {"users":{str(user.id): region}}
                 data = json.load(file)
@@ -71,6 +80,7 @@ class TimeListener(commands.Cog):
         color = int(get_color(bot, ctx.message))
         embed = discord.Embed(title="**Timezone set!**", colour=discord.Colour(color))
         embed.add_field(name="🌍🌍🌍", value= "Timezone for <@{0}> is set to {1}".format(ctx.message.author.id, region))
+        embed.set_footer(text="For your security, we only save your timezone in terms of general regions, which is why it may not list your city. If the location is incorrect, try a different city in your timezone.")
         await ctx.send(embed=embed)
     
     @tzset.error

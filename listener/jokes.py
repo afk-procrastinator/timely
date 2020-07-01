@@ -15,6 +15,8 @@ from master import get_color
 week = ["weeks", "week", "wk", "wks"]
 day = ["days", "day", "dy", "dys"]
 hour = ["hours", "hour", "hr", "hrs"]
+commonWords = ["ourselves", "hers", "between", "yourself", "but", "again", "there", "about", "once", "during", "out", "very", "having", "with", "they", "own", "an", "be", "some", "for", "do", "its", "yours", "such", "into", "of", "most", "itself", "other", "off", "is", "s", "am", "or", "who", "as", "from", "him", "each", "the", "themselves", "until", "below", "are", "we", "these", "your", "his", "through", "don", "nor", "me", "were", "her", "more", "himself", "this", "down", "should", "our", "their", "while", "above", "both", "up", "to", "ours", "had", "she", "all", "no", "when", "at", "any", "before", "them", "same", "and", "been", "have", "in", "will", "on", "does", "yourselves", "then", "that", "because", "what", "over", "why", "so", "can", "did", "not", "now", "under", "he", "you", "herself", "has", "just", "where", "too", "only", "myself", "which", "those", "i", "after", "few", "whom", "t", "being", "if", "theirs", "my", "against", "a", "by", "doing", "it", "how", "further", "was", "here", "than"]
+
 
 class JokesListener(commands.Cog):
     @bot.command()
@@ -155,9 +157,11 @@ class JokesListener(commands.Cog):
         a = collections.Counter()
         for i in messages:
             content = (i.content.split())
-            auth = i.author.id
-            authors.append(auth)
-            c.update(content)
+            for words in content:
+                if words not in commonWords:
+                    auth = i.author.id
+                    authors.append(auth)
+                    c.update(content)
         for letter, count in c.most_common(3):
             if letter == None:
                 return
@@ -183,7 +187,7 @@ class JokesListener(commands.Cog):
         embed.add_field(name="Most common words:", value=commonString)
         embed.add_field(name="Most active members:", value=authorString)
         await message.edit(embed=embed)
-    
+    '''
     @messages.error
     async def messages_error(self,ctx, error):
         color = int(get_color(bot, ctx.message))
@@ -191,7 +195,7 @@ class JokesListener(commands.Cog):
         embed = discord.Embed(title="Whoops!", colour=discord.Colour(color))
         embed.add_field(name="There's been an error", value="Please type `{0}help`".format(prefix))
         await ctx.send(embed = embed) 
-        
+        '''
 ''' IN PROCESS
     @bot.command()
     async def messages(self, ctx, *args):

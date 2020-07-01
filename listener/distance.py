@@ -84,8 +84,15 @@ def difference(self, initial: str, method: str):
 class DistanceListener(commands.Cog):
     #difference command
     @bot.command()
-    async def dis(self, ctx, arg1:str, arg2:str):
+    async def dis(self, ctx, arg1:str, *arg2:str):
         now = ar.utcnow()
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        if arg1 == "help":
+            embed = discord.Embed(title="**`dis` help!**", colour=discord.Colour(color))
+            embed.add_field(name="Help is here!", value="Correct format is `{0}dis DD/MM/YYY`".format(prefix))
+            await ctx.send(embed=embed)
+            return
         color = int(get_color(bot, ctx.message))
         try:
             startDateParsed = ar.get(arg1, 'DD/MM/YYYY')
@@ -94,7 +101,7 @@ class DistanceListener(commands.Cog):
             color = int(get_color(bot, ctx.message))
             embed = discord.Embed(title="Error!", colour=discord.Colour(color))
             embed.add_field(name=">:(", value="Correct format is `{0}dis DD/MM/YYY`".format(prefix))
-            embed.set_footer(text="Type `{0}help`!")
+            embed.set_footer(text="Type `{0}help`!".format(prefix))
             await ctx.send(embed = embed)    
         string, date = difference(self, startDateParsed, arg2)
         embed = discord.Embed(title="Days until: {0}".format(date), colour=discord.Colour(color))
@@ -111,6 +118,14 @@ class DistanceListener(commands.Cog):
         message = await ctx.send(embed = embed)
         await asyncio.sleep(5)
         await message.delete()
+        
+    @bot.command()
+    async def distance(self, ctx):
+        color = int(get_color(bot, ctx.message))
+        prefix = get_prefix(bot, ctx.message)
+        embed = discord.Embed(title="**`dis` help!**", colour=discord.Colour(color))
+        embed.add_field(name="Help is here!", value="Correct format is `{0}dis DD/MM/YYY`".format(prefix))
+        await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(DistanceListener(client))
