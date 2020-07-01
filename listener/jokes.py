@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 import requests
 import collections
 import json
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords 
 from master import get_prefix
 from howlongtobeatpy import HowLongToBeat
 bot = commands.Bot(command_prefix=get_prefix)
@@ -15,7 +17,6 @@ from master import get_color
 week = ["weeks", "week", "wk", "wks"]
 day = ["days", "day", "dy", "dys"]
 hour = ["hours", "hour", "hr", "hrs"]
-commonWords = ["\ ", "ourselves", "hers", "between", "yourself", "but", "again", "there", "about", "once", "during", "out", "very", "having", "with", "they", "own", "an", "be", "some", "for", "do", "its", "yours", "such", "into", "of", "most", "itself", "other", "off", "is", "s", "am", "or", "who", "as", "from", "him", "each", "the", "themselves", "until", "below", "are", "we", "these", "your", "his", "through", "don", "nor", "me", "were", "her", "more", "himself", "this", "down", "should", "our", "their", "while", "above", "both", "up", "to", "ours", "had", "she", "all", "no", "when", "at", "any", "before", "them", "same", "and", "been", "have", "in", "will", "on", "does", "yourselves", "then", "that", "because", "what", "over", "why", "so", "can", "did", "not", "now", "under", "he", "you", "herself", "has", "just", "where", "too", "only", "myself", "which", "those", "i", "after", "few", "whom", "t", "being", "if", "theirs", "my", "against", "a", "by", "doing", "it", "how", "further", "was", "here", "than"]
 
 
 class JokesListener(commands.Cog):
@@ -147,7 +148,7 @@ class JokesListener(commands.Cog):
     @bot.command()
     async def messages(self, ctx, *args):
         prefix = get_prefix(bot, ctx.message)
-        if args[0] == "help":
+        if args and args[0] == "help":
             embed = discord.Embed(title="**`messages` help!**", colour=discord.Colour(color))
             embed.add_field(name="Help is here!", value="Correct format is `{0}messages CHANNEL`".format(prefix))
             embed.set_footer(text="`CHANNEL` value is optional.")
@@ -158,7 +159,6 @@ class JokesListener(commands.Cog):
         # args[1] should be int
         # if args[2] doesnt exist, then its number of messages
         # if it does, then its hours/days/etc
-        amount: int
         prefix = get_prefix(bot, ctx.message)
         color = int(get_color(bot, ctx.message))
         embedTitle: str
@@ -180,10 +180,13 @@ class JokesListener(commands.Cog):
         authorsStr = []
         c = collections.Counter()
         a = collections.Counter()
+        stopWords = stopwords.words("english")
+        print(stopWords)
         for i in messages:
             content = (i.content.split())
             for words in content:
-                if words not in commonWords:
+                print(words)
+                if words.lower() not in stopWords:
                     auth = i.author.id
                     authors.append(auth)
                     c.update(content)

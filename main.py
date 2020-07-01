@@ -84,7 +84,7 @@ async def PPstatusPP(ctx, *args):
         await user.send(""""Current statistics:
                         Users: {0}
                         Guilds: {1}""".format(memberCount, guildCount))
-
+'''
 @bot.event
 async def on_command_error(ctx, exception):
     color = get_color(bot, ctx.message)
@@ -107,7 +107,7 @@ async def on_command_error(ctx, exception):
         message = await ctx.send(embed = embed)
     await asyncio.sleep(5)
     await message.delete()
-'''
+
 @bot.event
 async def on_error(event_method, *args, **kwargs):
     id = (args[0].guild.id)
