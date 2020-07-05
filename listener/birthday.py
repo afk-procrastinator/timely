@@ -37,11 +37,18 @@ class BirthdayListener(commands.Cog):
         user = ctx.message.author
         combined = " ".join(args) # i.e. 3 Jan
         try:
-            date = arrow.get(combined, "MMMM D")
-            writeFile(combined, ctx, user)
-            embed = discord.Embed(title="Birthday set!", colour=discord.Colour(color))
-            embed.add_field(name="🎂🎂🎂", value="Set to: **{0}**".format(date.format("MMMM Do")))
-            await user.send(embed = embed)
+            if len(args[0]) > 3:
+                date = arrow.get(combined, "MMMM D")
+                writeFile(combined, ctx, user)
+                embed = discord.Embed(title="Birthday set!", colour=discord.Colour(color))
+                embed.add_field(name="🎂🎂🎂", value="Set to: **{0}**".format(date.format("MMMM Do")))
+                await user.send(embed = embed)
+            elif len(args[0]) == 3:
+                date = arrow.get(combined, "MMM D")
+                writeFile(combined, ctx, user)
+                embed = discord.Embed(title="Birthday set!", colour=discord.Colour(color))
+                embed.add_field(name="🎂🎂🎂", value="Set to: **{0}**".format(date.format("MMMM Do")))
+                await user.send(embed = embed)
         except ValueError:
             embed = discord.Embed(title="Birthday error!", colour=discord.Colour(color))
             embed.add_field(name=">:(", value="Please try again, or type `{}help`".format(prefix))

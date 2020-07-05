@@ -122,8 +122,9 @@ class JokesListener(commands.Cog):
         await message.delete()
         
     @bot.command()
-    async def qr(self, ctx, args):
-        args = args.join("%20")
+    async def qr(self, ctx, *args):
+        color = int(get_color(bot, ctx.message))
+        args = "%20".join(args)
         prefix = get_prefix(bot, ctx.message)
         if args[0] == "help":
             embed = discord.Embed(title="**`qr` help!**", colour=discord.Colour(color))
@@ -131,20 +132,22 @@ class JokesListener(commands.Cog):
             await ctx.send(embed=embed)
             return
         color = int(get_color(bot, ctx.message))
-        url = "http://api.qrserver.com/v1/create-qr-code/?data={}&size=1000x1000".format(args)
+        url = "http://api.qrserver.com/v1/create-qr-code/?data={}&size=250x250".format(args)
         embed = discord.Embed(title="QR Generator:", colour=discord.Colour(color))
         embed.set_image(url=url)
         embed.set_footer(text="Thanks to QRServer for the API!")
         await ctx.send(embed = embed)   
 
     @qr.error
-    async def qr_error(self, ctx, error):
-        prefix = get_prefix(bot, ctx.message)
+    async def qr_error(self, ctx):
         color = int(get_color(bot, ctx.message))
-        embed = discord.Embed(title="Error!", colour=discord.Colour(color))
-        embed.add_field(name=">:(", value="Please try again, or type `{}help`".format(prefix))
-        await ctx.send(embed = embed)  
-        
+        prefix = get_prefix(bot, ctx.message)
+        embed = discord.Embed(title="**`qr` help!**", colour=discord.Colour(color))
+        embed.add_field(name="Help is here!", value="Correct format is `{0}qr MESSAGE`".format(prefix))
+        message = await ctx.send(embed=embed)
+        await asyncio.sleep(5)
+        await message.delete()
+
     @bot.command()
     async def messages(self, ctx, *args):
         prefix = get_prefix(bot, ctx.message)
@@ -216,7 +219,7 @@ class JokesListener(commands.Cog):
         embed.add_field(name="Most common words:", value=commonString)
         embed.add_field(name="Most active members:", value=authorString)
         await message.edit(embed=embed)
-    '''
+    
     @messages.error
     async def messages_error(self,ctx, error):
         color = int(get_color(bot, ctx.message))
@@ -224,7 +227,9 @@ class JokesListener(commands.Cog):
         embed = discord.Embed(title="Whoops!", colour=discord.Colour(color))
         embed.add_field(name="There's been an error", value="Please type `{0}help`".format(prefix))
         await ctx.send(embed = embed) 
-        '''
+        await asyncio.sleep(5)
+        await message.delete()  
+    
 ''' IN PROCESS
     @bot.command()
     async def messages(self, ctx, *args):

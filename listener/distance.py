@@ -19,7 +19,7 @@ min = ["minutes", "minute", "min", "mins"]
 def difference(self, initial: str, method: str):
     now = ar.utcnow()
     difference = initial - now
-    inFormat = method.lower()
+    inFormat = method[0].lower()
     difference = difference.days
     if inFormat in ["years", "year", "yr", "yrs"]:
         differenceQ = (divmod(difference, 365))
@@ -97,17 +97,20 @@ class DistanceListener(commands.Cog):
         try:
             startDateParsed = ar.get(arg1, 'DD/MM/YYYY')
         except ar.ParserError:
-            prefix = get_prefix(bot, ctx.message)
-            color = int(get_color(bot, ctx.message))
-            embed = discord.Embed(title="Error!", colour=discord.Colour(color))
-            embed.add_field(name=">:(", value="Correct format is `{0}dis DD/MM/YYY`".format(prefix))
-            embed.set_footer(text="Type `{0}help`!".format(prefix))
-            await ctx.send(embed = embed)    
+            try:
+                startDateParsed = ar.get(arg1, 'D/M/YYYY')
+            except:
+                prefix = get_prefix(bot, ctx.message)
+                color = int(get_color(bot, ctx.message))
+                embed = discord.Embed(title="Error!", colour=discord.Colour(color))
+                embed.add_field(name=">:(", value="Correct format is `{0}dis DD/MM/YYYY`".format(prefix))
+                embed.set_footer(text="Type `{0}help`!".format(prefix))
+                await ctx.send(embed = embed)    
         string, date = difference(self, startDateParsed, arg2)
         embed = discord.Embed(title="Days until: {0}".format(date), colour=discord.Colour(color))
         embed.add_field(name="⏰", value=string)
         await ctx.send(embed = embed)
-        
+        '''
     @dis.error
     async def dis_error(self, ctx, error):
         color = int(get_color(bot, ctx.message))
@@ -118,7 +121,7 @@ class DistanceListener(commands.Cog):
         message = await ctx.send(embed = embed)
         await asyncio.sleep(5)
         await message.delete()
-        
+        '''
     @bot.command()
     async def distance(self, ctx):
         color = int(get_color(bot, ctx.message))
